@@ -1,42 +1,32 @@
-import React, { useState }from 'react';
-import { StyleSheet,Text,View, Button } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+import { Text,View,StyleSheet } from 'react-native';
 
 function App() {
-  const [add, setAdd] = useState(0)
+ 
+  const Stack = createStackNavigator();
 
-  const addThis = () => {
-    setAdd(add+1)
-  }  
-
-  const resetThis = () => {
-    setAdd(0)
+  function ScreenA() {
+    return (
+      <View>
+        <Text>Screen A</Text>
+      </View>
+    )
   }
+  
   return (
-    <View style={styles.body}>
-      <Text style={styles.text}>Hello Gabriel, how is it going today?</Text>
-      <Text style={styles.text}>You added {add}</Text>
-      <Button style={styles.but} title='Add' onPress={()=>{addThis()}}></Button>
-      <Button title='Reset' onPress={()=>{resetThis()}}></Button>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Screen_A"
+          component={ ScreenA }
+        />
+
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-    backgroundColor: 'blue',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    color: 'white',
-    fontSize: 20,
-    margin: 10,
-  },
-  but: {
-    color: 'red',
-    margin: 100,
-  },
-});
 
 export default App;
