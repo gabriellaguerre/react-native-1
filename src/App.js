@@ -7,6 +7,7 @@ import ScreenA from './ScreenA';
 import ScreenB from './ScreenB';
 // import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import { Text,View,StyleSheet, Pressable } from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 // const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -15,7 +16,24 @@ function App() {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={({route})=>({
+          tabBarIcon: ({focused, size, color})=>{
+              let iconName;
+              if(route.name==='Screen_A') {
+                iconName='autoprefixer'
+              } else if(route.name==='Screen_B') {
+                iconName='btc'
+              }
+              return (
+                <FontAwesome5 
+                name={iconName}
+                />
+              )
+          }
+        })
+        }
+        >
         <Tab.Screen
           name="Screen_A"
           component={ ScreenA }
