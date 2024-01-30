@@ -2,16 +2,16 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator} from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ScreenA from './ScreenA';
 import ScreenB from './ScreenB';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-// import { createMaterialBottomTabNavigator} from 'react-native-paper'
+import { createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs'
 
 // const Stack = createStackNavigator();
- const Tab = createBottomTabNavigator()
-// const Tab = createMaterialBottomTabNavigator()
+//  const Tab = createBottomTabNavigator()
+const Tab = createMaterialBottomTabNavigator()
 
 function App() {
 
@@ -19,6 +19,7 @@ function App() {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({route})=>({
+         
           tabBarIcon: ({focused, size, color})=>{
               let iconName;
               if(route.name==='Screen_A') {
@@ -37,17 +38,18 @@ function App() {
                 color={color}
                 />
               )
-          }
-        })
-        }
-        tabBarOptions={{
+          },
           activeTintColor: 'blue',
           inactiveTintColor: 'yellow',
           activeBackgroundColor: 'red',
           labelStyle: {
             fontSize: 15
           }
-        }}
+        })
+        }
+        activeColor='green'
+        inactiveColor='blue'
+        barStyle={{backgroundColor:'lightblue'}}
         >
         
         <Tab.Screen
