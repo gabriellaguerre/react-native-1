@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View, Pressable, StyleSheet } from 'react-native'
 
-function ScreenA({navigation}) {
+function Home({navigation}) {
 
     const onPressHandler = () => {
       navigation.navigate("Screen_B" )
@@ -31,7 +31,7 @@ function ScreenA({navigation}) {
         margin: 10,
       }
 })
-export default ScreenA
+export default Home
 
 
 
