@@ -1,20 +1,46 @@
-import React from 'react'
-import { Text, View, Pressable, StyleSheet } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Text, View, StyleSheet, Button } from 'react-native'
 
 function Home({navigation}) {
+  const [name, setName]= useState('')
 
-    const onPressHandler = () => {
-      navigation.navigate("Screen_B" )
+  useEffect(()=> {
+    getData()
+  },[])
+
+  const logout = () => {
+    try {
+      AsyncStorage.removeItem('UserName')
+      setName('')
+      navigation.navigate('Login')
+
+    } catch (error) {
+      console.log(error)
     }
+  }
+
+  const getData = () => {
+    try {
+      AsyncStorage.getItem('UserName')
+      .then(value => {
+        if(value != null) {
+          setName(value)
+        } 
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
   
     return (
       <View style={styles.body}>
-        <Text style={styles.text}>Screen A</Text>
-        <Pressable
-        onPress={onPressHandler}
-        style={({pressed})=>({backgroundColor: pressed? 'green':'red'})}>
-        <Text style={styles.text}>Go To Screen B</Text>
-        </Pressable>
+        <Text style={styles.text}>Welcome {name}</Text>
+        <Button 
+        title='Logout'
+        color='red'
+        onPress={logout}/>
+        
       </View>
     )
   }
