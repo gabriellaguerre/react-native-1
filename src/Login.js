@@ -47,7 +47,6 @@ function Login ({navigation}) {
               [],
               (tx, results)=>{
                 let len = results.rows.length;
-                console.log(len, 'IN LOGIN LEN')
                 if(len > 0) {
                   let userName = results.rows.item(0).Name
                   let userAge = results.rows.item(0).Age

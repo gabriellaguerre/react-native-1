@@ -57,8 +57,6 @@ function Home({navigation}) {
           [],
           (tx, results)=>{
             let len = results.rows.length;
-            console.log(len, 'IN HOME PAGE')
-            console.log(name, age, 'PPPPPPPPPPP')
             if(len > 0) {
               let userName = results.rows.item(0).Name
               let userAge = results.rows.item(0).Age
