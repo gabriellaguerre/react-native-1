@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import {Alert} from 'react-native'
 import { Text, View, StyleSheet, Button, TextInput } from 'react-native'
 import SQLite from 'react-native-sqlite-storage'
+import { useSelector,useDispatch } from 'react-redux';
+import { setName, setAge } from './redux/actions';
 
 const db = SQLite.openDatabase({
     name: 'MangoDB',
@@ -14,8 +16,11 @@ error=>{console.log(error)}
 
 
 function Home({navigation}) {
-  const [name, setName]= useState('')
-  const [age, setAge] = useState('')
+  const person = useSelector(state => state.userReducer)
+  const dispatch = useDispatch();
+  console.log(person, "IN HOME COMPONENT")
+  // const [name, setName]= useState('')
+  // const [age, setAge] = useState('')
  
 
 
@@ -41,35 +46,35 @@ function Home({navigation}) {
     }
   }
 
-  const getData = () => {
-    try {
-      // AsyncStorage.getItem('UserData')
-      // .then(value => {
-      //   if(value != null) {
-      //     let user = JSON.parse(value)
-      //     setName(user.Name)
-      //     setAge(user.Age)
-      //   } 
-      // })
-      db.transaction((tx)=> {
-        tx.executeSql(
-          "SELECT Name, Age FROM Users",
-          [],
-          (tx, results)=>{
-            let len = results.rows.length;
-            if(len > 0) {
-              let userName = results.rows.item(0).Name
-              let userAge = results.rows.item(0).Age
-              setName(userName)
-              setAge(userAge)
-            }
-          }
-        )
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const getData = () => {
+  //   try {
+  //     // AsyncStorage.getItem('UserData')
+  //     // .then(value => {
+  //     //   if(value != null) {
+  //     //     let user = JSON.parse(value)
+  //     //     setName(user.Name)
+  //     //     setAge(user.Age)
+  //     //   } 
+  //     // })
+  //     db.transaction((tx)=> {
+  //       tx.executeSql(
+  //         "SELECT Name, Age FROM Users",
+  //         [],
+  //         (tx, results)=>{
+  //           let len = results.rows.length;
+  //           if(len > 0) {
+  //             let userName = results.rows.item(0).Name
+  //             let userAge = results.rows.item(0).Age
+  //             dispatch(setName(name))
+  //             dispatch(setAge(age))
+  //           }
+  //         }
+  //       )
+  //     })
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
   const updateData = async () => {
     if(name.length===0){
@@ -100,13 +105,13 @@ function Home({navigation}) {
   
     return (
       <View style={styles.body}>
-        <Text style={styles.text}>Welcome {name}</Text>
-        <Text style={styles.text}>Your age is {age}</Text>
+        <Text style={styles.text}>Welcome {person.name}</Text>
+        <Text style={styles.text}>Your age is {person.age}</Text>
         <TextInput 
           style={styles.input}
           placeholder='Enter your new name'
           value={name}
-          onChangeText={(value)=>setName(value)}
+          onChangeText={(value)=>dispatch(setName(value))}
           />
         <View style={styles.updateButton}>
         <Button 

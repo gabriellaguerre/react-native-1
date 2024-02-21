@@ -3,7 +3,10 @@ import React, {useState,useEffect} from 'react'
 import {Alert} from 'react-native'
 // import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StyleSheet, Text, View, Image, TextInput, Button } from 'react-native'
-import SQLite from 'react-native-sqlite-storage'
+import SQLite from 'react-native-sqlite-storage';
+import { useSelector,useDispatch } from 'react-redux';
+import  * as userAction from './redux/actions';
+// import  thisAge from './redux/actions';
 
 const db = SQLite.openDatabase({
     name: 'MangoDB',
@@ -14,12 +17,21 @@ error=>{console.log(error)}
 );
 
 function Login ({navigation}) {
+    // const setName = setName
+    const person = useSelector(state => state.user)
+    // const age = useSelector(state => state.user.age)
+    console.log(person, 'PERSON IN LOGIN Page')
+    // const name = person.name;
+    // const age = person.age
+    const dispatch = useDispatch();
+   
     const [name, setName] = useState('')
     const [age, setAge] = useState('')
    
+    console.log(name, age, 'USE STATE')
     useEffect(()=>{
         createTable()
-        getData()
+        // getData()
     },[])
 
     const createTable = ()=> {
@@ -31,42 +43,44 @@ function Login ({navigation}) {
             )
         })
     }
-    const getData = () => {
-        try {
-          // AsyncStorage.getItem('UserData')
-          // .then(value => {
-          //   if(value != null) {
-          //     let user = JSON.parse(value)
-          //     setName(user.Name)
-          //     setAge(user.Age)
-          //   } 
-          // })
-          db.transaction((tx)=> {
-            tx.executeSql(
-              "SELECT Name, Age FROM Users",
-              [],
-              (tx, results)=>{
-                let len = results.rows.length;
-                if(len > 0) {
-                  let userName = results.rows.item(0).Name
-                  let userAge = results.rows.item(0).Age
-                  setName(userName)
-                  setAge(userAge)
-                }
-              }
-            )
-          })
-        } catch (error) {
-          console.log(error)
-        }
-      }
+    // const getData = () => {
+    //     try {
+    //       // AsyncStorage.getItem('UserData')
+    //       // .then(value => {
+    //       //   if(value != null) {
+    //       //     let user = JSON.parse(value)
+    //       //     setName(user.Name)
+    //       //     setAge(user.Age)
+    //       //   } 
+    //       // })
+    //       db.transaction((tx)=> {
+    //         tx.executeSql(
+    //           "SELECT Name, Age FROM Users",
+    //           [],
+    //           (tx, results)=>{
+    //             let len = results.rows.length;
+    //             if(len > 0) {
+    //               let userName = results.rows.item(0).Name
+    //               let userAge = results.rows.item(0).Age
+    //               setName(userName)
+    //               setAge(userAge)
+    //             }
+    //           }
+    //         )
+    //       })
+    //     } catch (error) {
+    //       console.log(error)
+    //     }
+    //   }
 
     const setData = async () => {
-        if(name.length===0 || age.length===0){
+        if(name.length===0){
             Alert.alert('Warning!', 'Please enter your name')
 
         } else  {
             try {
+                await dispatch(userAction.thisName(name))
+                await dispatch(userAction.thisAge(age))
                 // let user = {
                 //     Name: name,
                 //     Age: age,
@@ -94,7 +108,8 @@ function Login ({navigation}) {
         <TextInput 
             style={styles.input}
             placeholder='Enter your name'
-            onChangeText={(value)=> setName(value)}/>
+            onChangeText={(value)=> setName(value)}
+            />
          <TextInput 
             style={styles.input}
             placeholder='Enter your age'
@@ -102,7 +117,7 @@ function Login ({navigation}) {
         <Button 
             title='Login'
             color= 'green'
-            onPress={setData}
+            onPress={()=>setData()}
             />
       </View>
     )
