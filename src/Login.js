@@ -5,7 +5,8 @@ import {Alert} from 'react-native'
 import { StyleSheet, Text, View, Image, TextInput, Button } from 'react-native'
 import SQLite from 'react-native-sqlite-storage';
 import { useSelector,useDispatch } from 'react-redux';
-import  * as userAction from './redux/actions';
+import  { person } from './redux/reducers';
+import { nanoid } from '@reduxjs/toolkit';
 // import  thisAge from './redux/actions';
 
 const db = SQLite.openDatabase({
@@ -18,7 +19,7 @@ error=>{console.log(error)}
 
 function Login ({navigation}) {
     // const setName = setName
-    const person = useSelector(state => state.user)
+    const thisPerson = useSelector(state => state.users)
     // const age = useSelector(state => state.user.age)
     console.log(person, 'PERSON IN LOGIN Page')
     // const name = person.name;
@@ -74,13 +75,18 @@ function Login ({navigation}) {
     //   }
 
     const setData = async () => {
-        if(name.length===0){
-            Alert.alert('Warning!', 'Please enter your name')
+        if(name.length===0 || age===0 ){
+            Alert.alert('Warning!', 'Please enter your name or age')
 
         } else  {
             try {
-                await dispatch(userAction.thisName(name))
-                await dispatch(userAction.thisAge(age))
+                dispatch(person({
+                    id: nanoid(),
+                    name,
+                    age
+                }))
+               setName('')
+               setAge('')
                 // let user = {
                 //     Name: name,
                 //     Age: age,

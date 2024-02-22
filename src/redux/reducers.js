@@ -1,34 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = {
-    name: '',
-    age: 0,
-}
+const initialState = [
+    {id: 1, name: 'gus', age:'49' },
+    {id: 2, name: 'hila', age: '30'},
+]
 
-// export const setName = name => dispatch => {
-//     dispatch({
-//         type: SET_USER_NAME,
-//         payload: name
-//     })
-// }
 
-// export const setAge = age => dispatch => {
-//     dispatch({
-//         type: SET_USER_AGE,
-//         payload: age
-//     })
-// }
-
-const userSlice = createSlice({
-    name: 'user',
+const usersSlice = createSlice({
+    name: 'users',
     initialState,
     reducers: {
-        thisName(state, action){
-             state.name = action.payload
+        person(state, action){
+            state.push(action.payload)
         },
-        thisAge(state, action) {
-            state.age = action.payload
-        }
+       
     }
 })
 
@@ -45,9 +30,9 @@ const userSlice = createSlice({
 
 
 
-export const { thisName, thisAge } = userSlice.actions
+export const { person } = usersSlice.actions
 
-export default userSlice.reducer;
+export default usersSlice.reducer;
 
 
 

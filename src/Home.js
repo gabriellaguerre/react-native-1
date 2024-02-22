@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 // import AsyncStorage from '@react-native-async-storage/async-storage'
-import {Alert} from 'react-native'
+import {Alert, ScrollView} from 'react-native'
 import { Text, View, StyleSheet, Button, TextInput } from 'react-native'
 import SQLite from 'react-native-sqlite-storage'
 import { useSelector,useDispatch } from 'react-redux';
-import { setName, setAge } from './redux/actions';
 
 const db = SQLite.openDatabase({
     name: 'MangoDB',
@@ -16,16 +15,16 @@ error=>{console.log(error)}
 
 
 function Home({navigation}) {
-  const person = useSelector(state => state.userReducer)
+  const persons = useSelector(state => state.users)
   const dispatch = useDispatch();
-  console.log(person, "IN HOME COMPONENT")
+  console.log(persons, "IN HOME COMPONENT")
   // const [name, setName]= useState('')
   // const [age, setAge] = useState('')
  
 
 
   useEffect(()=> {
-    getData()
+    // getData()
   },[])
 
   const logout = async() => {
@@ -105,20 +104,31 @@ function Home({navigation}) {
   
     return (
       <View style={styles.body}>
-        <Text style={styles.text}>Welcome {person.name}</Text>
-        <Text style={styles.text}>Your age is {person.age}</Text>
-        <TextInput 
+        <Text style={styles.text}>Welcome </Text>
+        <ScrollView style={styles.text}>
+          {
+            persons.map((person)=> {
+              return(
+                <View key={person.id}> 
+                  <Text>Name: {person.name}, Age: {person.age}</Text>
+                </View>
+              )
+            })
+
+          }
+        </ScrollView>
+        {/* <TextInput 
           style={styles.input}
           placeholder='Enter your new name'
           value={name}
           onChangeText={(value)=>dispatch(setName(value))}
-          />
+          /> */}
         <View style={styles.updateButton}>
-        <Button 
+        {/* <Button 
         title='update'
         color='orange'
         onPress={updateData}
-        />
+        /> */}
         </View>
         <Button 
         title='Logout'
